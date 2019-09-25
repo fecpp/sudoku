@@ -12,6 +12,6 @@ Always **git pull** before **git push**
 ```
 git pull
 
-git commit -m "message"
+git commit -m "some message"
 git push
 ```
