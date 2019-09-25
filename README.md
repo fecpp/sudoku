@@ -10,7 +10,7 @@ git clone git@github.com:fecpp/sudoku.git
 
 Always **git pull** before **git push**
 ```
-git pull // to check status
+git pull
 
 git commit -m "message"
 git push
