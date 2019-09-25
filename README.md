@@ -19,4 +19,4 @@ git status
 git push
 ```
 
-![alt text](https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjSqYKbsevkAhUUheYKHSY0C_kQjRx6BAgBEAQ&url=https%3A%2F%2Fstackoverflow.com%2Fquestions%2F292357%2Fwhat-is-the-difference-between-git-pull-and-git-fetch&psig=AOvVaw0pQcurcu_kRuyAwJ5-WdHe&ust=1569480659488601)
+![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
