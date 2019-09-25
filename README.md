@@ -4,7 +4,7 @@ install Git from [here](https://git-scm.com/book/en/v2/Getting-Started-Installin
 ##### From Terminal, go to your desired folder and type in following comment (one time login is required)
 ```
 git init
-git clone git@github.com:fecpp/sudoku.git
+git clone https://github.com/fecpp/sudoku.git
 ```
 
 
