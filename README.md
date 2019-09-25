@@ -12,9 +12,10 @@ Always **git pull** before **git push**
 ```
 git pull
 ```
-***after make changes to files***
+***after make changes to files...***
 ```
 git commit -m "some message"
+git add .
 git push
 ```
 
