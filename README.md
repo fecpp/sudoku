@@ -2,13 +2,13 @@
 install Git from [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 ##### From cmd/Terminal, go to your desired folder and type in following comment (one time login is required):
+##### 只需初始化一次
 ```
 git init
 git clone https://github.com/fecpp/sudoku.git
 ```
 
-
-Always **git pull** before **git push**
+##### 以下常规操作：先pull再push
 ```
 git pull
 ```
