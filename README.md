@@ -14,8 +14,8 @@ git pull
 ```
 ***after make changes to files...***
 ```
-git commit -m "some message"
 git add .
+git commit -m "some message"
 git push
 ```
 
