@@ -19,20 +19,40 @@ public:
 	void save_Board(); //save the current board to txt file
 };
 
-//save the current board to txt file
+//read a board from a txt file
+void read_Board() {
+	//need to add resource file to our sln first, otherwise need to type out the extire directory.
+	//file must be placed under the same directory as the sln file
+	//right-click Resource File -> Add -> Existing Item...
+	ifstream infile;
+	infile.open("mysudoku.txt");
+
+	if (infile.fail()) {
+		cerr << "File does not exist in solution" << endl;
+		exit(1);
+	}
+
+	string rawBoard; // to store the entire string, deal with it later 
+	rawBoard.assign((istreambuf_iterator<char>(infile)), (istreambuf_iterator<char>()));
+
+	cout << rawBoard << endl;
+}
+
+
+//save the current board to a txt file
 void Sudoku::save_Board() {
-	ofstream myfile("mySudoku.txt");
-	if (myfile.is_open()) {
+	ofstream outfile("mySudoku.txt");
+	if (outfile.is_open()) {
 
 		for (int i = 1; i <= 9; i++) {
 			for (int j = 1; j <= 9; j++) {
 				if (change[i][j] == 1) {
-					myfile << "g" << board[i][j] << ", ";
+					outfile << "g" << board[i][j] << ",";
 				}
-				else myfile << board[i][j] << ", ";
+				else outfile << board[i][j] << ",";
 			}
 		}
-		myfile.close();
+		outfile.close();
 	}
 	else cout << "Unable to open text file";
 }
@@ -85,17 +105,16 @@ void Sudoku::print_Board() {
 }
 
 int main() {
-	
+
 	Sudoku game;
 
 	game.init_Board();
 	game.print_Board();
 	game.save_Board();
+	cout << endl << "\x1B[31m" << "ABC" << "\033[0m" << endl;
 
-	cout << endl;
-	cout << "\x1B[31m" << "ABV" << "\033[0m";
+	read_Board();
 
-	
 
 
 	return 0;
