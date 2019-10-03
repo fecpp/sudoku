@@ -1,24 +1,41 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <iomanip>
-#include <time.h>
 #include <cstdlib>
 #include <Windows.h>
-#include <stdlib.h>
 
 using namespace std;
 
-class Sudoku
-{
+class Sudoku {
 private: 
 	char board[10][10];
 	int change[10][10];
 
 public:
-	Sudoku();
-	void init_Board();
-	void print_Board();
+	Sudoku(); //constructer fun 
+	void init_Board(); //initiate the board as per Q1 requirement 
+	void print_Board(); //print the board in console
+	void save_Board(); //save the current board to txt file
 };
+
+//save the current board to txt file
+void Sudoku::save_Board() {
+	ofstream myfile("mySudoku.txt");
+	if (myfile.is_open()) {
+
+		for (int i = 1; i <= 9; i++) {
+			for (int j = 1; j <= 9; j++) {
+				if (change[i][j] == 1) {
+					myfile << "g" << board[i][j] << ", ";
+				}
+				else myfile << board[i][j] << ", ";
+			}
+		}
+		myfile.close();
+	}
+	else cout << "Unable to open text file";
+}
 
 Sudoku::Sudoku() {
 	for (int i = 1; i <= 9; i++) {
@@ -50,7 +67,6 @@ void setcolor(unsigned short color) {
 }
 */
 
-
 void Sudoku::print_Board() {
 	cout << "   | 1 2 3 | 4 5 6 | 7 8 9 " << endl;
 	cout << "---+-------+-------+-------" << endl;
@@ -74,9 +90,13 @@ int main() {
 
 	game.init_Board();
 	game.print_Board();
-	
+	game.save_Board();
+
 	cout << endl;
 	cout << "\x1B[31m" << "ABV" << "\033[0m";
+
+	
+
 
 	return 0;
 }
