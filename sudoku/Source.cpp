@@ -2,46 +2,121 @@
 #include <fstream>
 #include <string>
 #include <iomanip>
+///////////////
 #include <cstdlib>
 #include <Windows.h>
+#include <typeinfo>
 
 using namespace std;
 
-class Sudoku {
+class sudoku {
+
 private: 
-	char board[10][10];
-	int change[10][10];
+	const char UNASSIGNED = ' ';
 
 public:
-	Sudoku(); //constructer fun 
+	char board[10][10];
+	bool change[10][10]; // 0 by default, 1 if it's a new input.
+
+	sudoku(); //constructer fun 
 	void init_Board(); //initiate the board as per Q1 requirement 
 	void print_Board(); //print the board in console
-	void save_Board(); //save the current board to txt file
+	void save_Board(string filename); //save the current board to txt file
+	void clear_Input(string coord); //enter something like ("A5") 
+	void clear_Input(int i, int j); //enter something like (1, 5) 
+	bool solver_recur(char board[10][10]);
+	bool solver_recur(sudoku game);
 };
 
-//read a board from a txt file
-void read_Board() {
+bool sudoku::solver_recur(char board[10][10]) {	
+
+}
+
+bool sudoku::solver_recur(sudoku game) {
+
+}
+
+
+void sudoku::clear_Input(int i, int j) {
+	if (i < 1 || i > 9 || j < 1 || j > 9) {
+		cerr << "Please enter a valid coordinate." << endl;
+		return;
+	}
+
+	if (change[i][j] == 0 && board[i][j] != UNASSIGNED) {
+		cerr << "You cannot clear a default cell." << endl;
+		return;
+	}
+	else {
+		board[i][j] = UNASSIGNED;
+		change[i][j] == 0;
+		cout << "Cell " << char(i+'A'-1) << char(j+'1'-1) << " cleared." << endl;
+	}
+	
+}
+
+void sudoku::clear_Input(string coord) {
+	if (coord.length() != 2 || coord[0]<'A' || coord[0] >'I' || coord[1] < '1' || coord[1] > '9') {
+		cerr << "Please enter a valid coordinate." << endl;
+		return;
+	}
+
+	int i = coord[0] - 'A' + 1;
+	int j = coord[1] - '1' + 1;
+	if (change[i][j] == 0 && board[i][j] != UNASSIGNED) {
+		cerr << "You cannot clear a default cell." << endl;
+		return;
+	}
+	else {
+		board[i][j] = UNASSIGNED;
+		change[i][j] == 0;
+		cout << "Cell " << coord << " cleared." << endl;
+	}
+}
+
+
+//read a board from a txt file, NOT a member function of Class suduku
+sudoku read_Board_from_txt(string filename) {
 	//need to add resource file to our sln first, otherwise need to type out the extire directory.
 	//file must be placed under the same directory as the sln file
-	//right-click Resource File -> Add -> Existing Item...
+	//right-click on "Resource File" -> "Add" -> "Existing Item..."
 	ifstream infile;
-	infile.open("mysudoku.txt");
+	infile.open(filename);
 
 	if (infile.fail()) {
-		cerr << "File does not exist in solution" << endl;
-		exit(1);
+		cerr << filename << " does not exist in solution" << endl;
+		exit(EXIT_FAILURE);
 	}
 
 	string rawBoard; // to store the entire string, deal with it later 
-	rawBoard.assign((istreambuf_iterator<char>(infile)), (istreambuf_iterator<char>()));
+	rawBoard.assign((istreambuf_iterator<char>(infile)), (istreambuf_iterator<char>())); 
 
-	cout << rawBoard << endl;
+	sudoku res;
+	int c = 0, i = 1, j = 1;
+	
+	while (c < rawBoard.length()) {
+		if (rawBoard[c] == 'g') { 
+			res.change[i][j] = 1;
+			c++; 
+		}
+
+		res.board[i][j] = rawBoard[c];
+		if (j == 9) {
+			i++;
+			j = 1;
+		}
+		else { j++; }
+		c += 2;
+	}
+	
+	cerr << "Sudoku board read succeefully from " << filename << endl;
+	return res;
 }
 
 
 //save the current board to a txt file
-void Sudoku::save_Board() {
-	ofstream outfile("mySudoku.txt");
+void sudoku::save_Board(string filename) {
+	ofstream outfile(filename);
 	if (outfile.is_open()) {
 
 		for (int i = 1; i <= 9; i++) {
@@ -53,20 +128,21 @@ void Sudoku::save_Board() {
 			}
 		}
 		outfile.close();
+		cout << "Sudoku board successfully saved to " << filename << endl;
 	}
-	else cout << "Unable to open text file";
+	else cout << "Unable to open text file" << endl;
 }
 
-Sudoku::Sudoku() {
+sudoku::sudoku() {
 	for (int i = 1; i <= 9; i++) {
 		for (int j = 1; j <= 9; j++) {
-			board[i][j] = ' ';
+			board[i][j] = UNASSIGNED;
 			change[i][j] = 0;
 		}
 	}
 }
 
-void Sudoku::init_Board() {
+void sudoku::init_Board() {
 	board[1][1] = '9'; board[1][4] = '6'; board[1][6] = '3'; board[1][7] = '1'; board[1][8] = '2'; board[1][9] = '8';
 	board[2][1] = '8'; board[2][4] = '7'; board[2][6] = '1'; board[2][7] = '5'; board[2][8] = '3'; board[2][9] = '9';
 	board[3][1] = '1'; board[3][3] = '3'; board[3][4] = '8'; board[3][5] = '9'; board[3][8] = '6';
@@ -81,13 +157,13 @@ void Sudoku::init_Board() {
 }
 
 /*
-void setcolor(unsigned short color) {                                                   
+void setcolor(unsigned short color) {                                           
 	HANDLE hcon = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hcon, color);
 }
 */
 
-void Sudoku::print_Board() {
+void sudoku::print_Board() {
 	cout << "   | 1 2 3 | 4 5 6 | 7 8 9 " << endl;
 	cout << "---+-------+-------+-------" << endl;
 	for (int i = 1; i <= 9; i++) {
@@ -106,15 +182,16 @@ void Sudoku::print_Board() {
 
 int main() {
 
-	Sudoku game;
-
-	game.init_Board();
+	sudoku game;
+	game.init_Board();	//initiate the board as per Q1
 	game.print_Board();
-	game.save_Board();
-	cout << endl << "\x1B[31m" << "ABC" << "\033[0m" << endl;
+	game.save_Board("mySudoku.txt");	//save to "mySudoku.txt"
 
-	read_Board();
+	game.clear_Input("D5");	//clear the user input cell D5
+	game.print_Board();
 
+	sudoku game1 = read_Board_from_txt("mySudoku.txt");	
+	game1.print_Board();
 
 
 	return 0;
