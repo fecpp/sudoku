@@ -24,17 +24,13 @@ public:
 	void save_Board(string filename); //save the current board to txt file
 	void clear_Input(string coord); //enter something like ("A5") 
 	void clear_Input(int i, int j); //enter something like (1, 5) 
-	bool solver_recur(char board[10][10]);
-	bool solver_recur(sudoku game);
+	bool if_Solvable();
 };
 
-bool sudoku::solver_recur(char board[10][10]) {	
-
+bool sudoku::if_Solvable() {
+	return 0;
 }
 
-bool sudoku::solver_recur(sudoku game) {
-
-}
 
 
 void sudoku::clear_Input(int i, int j) {
